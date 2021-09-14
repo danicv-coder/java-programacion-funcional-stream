@@ -1,15 +1,31 @@
 package org.danicv.Stream.models;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class Usuario {
 	private String nombre;
 	private String apellido;
 	private Integer id;
 	private static int ultimoId;
 
+	private List<Factura> facturas;
+
 	public Usuario(String nombre, String apellido) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.id = ++ultimoId;
+		this.facturas = new ArrayList<>();
+	}
+
+	public List<Factura> getFacturas() {
+		return facturas;
+	}
+
+	public void addFacturas(Factura facturas) {
+		this.facturas.add(facturas);
+		facturas.setUsuario(this);
 	}
 
 	public Integer getId() {
@@ -46,9 +62,24 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return  nombre + " " + apellido ;
+		return nombre + " " + apellido;
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(apellido, nombre);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return Objects.equals(apellido, other.apellido) && Objects.equals(nombre, other.nombre);
+	}
 
 }
